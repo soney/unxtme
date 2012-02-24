@@ -1,0 +1,18 @@
+{
+"name": "unxt.me"
+, "description": "Unix Time Converter"
+, "version": "0.0.1"
+, "author": "Stephen Oney (Carnegie Mellon)"
+, "maintainers": [
+	{
+	"name": "Stephen Oney"
+	, "email": "swloney@gmail.com"
+	, "web": "http://www.stephenoney.com/"
+	}
+]
+, "private": true
+, "dependencies": {
+	"express": ">= 2.5.1"
+}
+, "engines": {"node": ">= 0.4.0 < 0.7.0"}
+}
