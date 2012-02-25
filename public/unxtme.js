@@ -112,4 +112,20 @@ $(function() {
 		}, 500);
 	}());
 
+	(function() {
+		$.ajax("http://maps.googleapis.com/maps/api/geocode/json"
+			, {
+				data: {
+					address: "5407 Friendship Ave Pittsburgh, PA"
+					, sensor: false
+				}
+				, success: function(data) {
+					console.log("Success");
+				}
+				, error: function(data) {
+					console.log("Error");
+				}
+			});
+	}());
+
 });
