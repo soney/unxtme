@@ -16,8 +16,10 @@ $(function() {
 		var stringified_state = localStorage.getItem("state");
 		if(stringified_state) {
 			var saved_state = JSON.parse(stringified_state);
+			/*
 			converting_from = saved_state.converting_from;
 			_.extend(cached_options, saved_state.cached_options);
+			*/
 		}
 
 		var serialize_state = function() {
@@ -47,7 +49,6 @@ $(function() {
 	};
 
 	var hide_human_display = function() {
-		$("input#unix_time").addClass("error");
 		$("div.human_time div.output").text("");
 	};
 	var update_human_display = function(options) {
@@ -58,8 +59,10 @@ $(function() {
 
 			if(_.isNaN(unix_time) || unix_time < 0) {
 				hide_human_display();
+				$("input#human_time").addClass("error");
 				return;
 			}
+			$("input#human_time").removeClass("error");
 
 			if(options.unix_format === "seconds") {
 				unix_time *= 1000;
@@ -357,15 +360,16 @@ $(function() {
 
 	$("div.input:visible input").focus().select();
 
-	$("div.options div.show_hide a").click(function() {
-		var parent = $(this).parent().parent();
-		if($("> div.dialog", parent).is(":visible")) {
-			$("> div.dialog", parent).hide();
-			$(this).text("options");
+	$("a#options").click(function() {
+		var time_box = $(this).parent().parent();
+		if($("div.dialog", time_box).is(":visible")) {
+			$("div.dialog", time_box).hide();
+			$(this).text("+");
 		} else {
-			$("> div.dialog", parent).show();
-			$(this).text("hide");
+			$("div.dialog", time_box).show();
+			$(this).text("-");
 		}
 	});
+
 	$("div.options div.dialog").hide();
 });

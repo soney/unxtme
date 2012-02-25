@@ -106,9 +106,11 @@ div.footer div.sitename {
 	text-transform: uppercase;
 }
 
-a#show_hide_options {
+a#options {
 	text-transform: uppercase;
-	font-size: 0.8em;
+	font-size: 0.7em;
+	position: relative;
+	top: -5px;
 }
 
 div.dialog {
@@ -154,4 +156,12 @@ div.time_location_details {
 div.options {
 	position: relative;
 	top: -3px;
+}
+
+input#human_format {
+	text-align: center;
+}
+
+div.dialog hr {
+	border: 1px solid #EEE;
 }
