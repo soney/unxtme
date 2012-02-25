@@ -1,88 +1,102 @@
+html, body {
+	height: 100%;
+}
+
 body {
+	text-align: center;
+	margin: 0px;
+}
+
+body, input {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-weight: 300;
-	text-align: center;
 }
 
-
-div.unix_time {
-}
-
-div.unix_time div.explanation {
-	font-size: 2em;
-	text-transform: uppercase;
-}
-
-input#unix_time {
-	border: 1px solid black;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-size: 2em;
-	text-align: center;
-}
-
-div.to_from {
-	font-size: 2em;
-	text-transform: uppercase;
+div.content {
+	max-width: 600px;
+	margin: auto;
+	vertical-align: middle;
 	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-bottom: 10px;
 }
 
-div.to_from strong {
-	font-weight: bold;
+input {
+	border: 1px solid black;
 }
 
-div.to_from a#from {
-	opacity: 0.5;
-}
-
-
-div.location_select {
-	font-size: 1.2em;
-	text-transform: uppercase;
-}
-
-div.human_time div.explanation {
-	font-size: 2em;
-	text-transform: uppercase;
+input.error {
+	color: #770000;
+	border: 1px solid red;
+	background-color: #FFEEEE;
 }
 
 input#unix_time {
-	border: 1px solid black;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-size: 2em;
 	text-align: center;
 }
 
-div.to_from {
+div.output {
 	font-size: 2em;
-	text-transform: uppercase;
 }
 
-
-div.location_select {
-	font-size: 1.2em;
-}
-
-input#time_location {
-	border: 1px solid black;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-size: 1.2em;
+div.input input {
+	font-size: 2em;
 }
 
 a {
 	text-decoration: none;
+	color: #999;
 }
 
-div.human_output {
+a:hover {
+	color: #77E;
+}
+
+::-webkit-input-placeholder  { color:#BBB; }
+input:-moz-placeholder { color:#BBB; }
+
+div.explanation {
 	font-size: 2em;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: -0.05em;
+}
+
+div.swap {
+	margin-top: 50px;
+	text-transform: uppercase;
+	margin-bottom: 50px;
+	font-size: 0.8em;
+	position: relative;
+	top: -0.1em;
+}
+
+div.location_select {
+	text-align: left;
+	width: 70%;
+	margin: auto;
+}
+
+input {
+	-webkit-transition: color,background-color,border-color 1s ease-in-out;
+}
+
+input#time_location.success {
+	color: #007700;
+	border: 1px solid green;
+	background-color: #EEFFEE;
+}
+input#time_location.pending {
+	color: #DAA520;
+	border: 1px solid yellow;
+	background-color: #FFFDD0;
 }
 
 div.footer {
 	font-size: 0.8em;
 	text-align: right;
 	position: static;
-	bottom: 20px;
-	right: 20px;
+	padding: 20px;
+	color: #CCC;
 }
 
 div.footer div.sitename {
@@ -92,15 +106,52 @@ div.footer div.sitename {
 	text-transform: uppercase;
 }
 
-div.footer div.sitename a {
+a#show_hide_options {
+	text-transform: uppercase;
+	font-size: 0.8em;
 }
 
-input#time_location.success {
-	border: 1px solid green;
+div.dialog {
+	text-transform: uppercase;
+	background-color: #F9F9F9;
+	font-size: 1.2em;
+	padding: 10px;
+	overflow: hidden;
 }
-input#time_location.pending {
-	border: 1px solid yellow;
+
+div.dialog input {
+	font-size: 1.2em;
 }
-input#time_location.error {
-	border: 1px solid red;
+
+input#human_time {
+	width: 17em;
+	text-align: center;
+}
+
+div.location_select div {
+}
+
+input#time_location {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	margin: 0px;
+	font-size: 1.1em;
+	position: relative;
+	top: -2px;
+}
+
+div.city span.radio_label {
+	display: inline-block;
+	float: left;
+	width: 4em;
+}
+
+div.time_location_details {
+	padding-left: 4em;
+	color: #AAA;
+}
+
+div.options {
+	position: relative;
+	top: -3px;
 }

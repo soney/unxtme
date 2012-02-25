@@ -5,37 +5,58 @@
 		<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 		<script type="text/javascript" src="underscore-min.js"></script>
 		<script type="text/javascript" src="moment.min.js"></script>
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="date.js"></script>
 		<script type="text/javascript" src="unxtme.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="icon" type="image/ico" href="favicon.ico">
 	</head>
 	<body>
 		<div class="content">
 			<div class="unix_time">
-				<div class="explanation">
-					<a href="javascript:void(0)" id="unix_time_explanation" alt="Seconds since midnight January 1, 1970 UTC">unix&nbsp;time</a>
-					<div class="format">
-						<input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label>
-						<input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label>
+				<div class="explanation">unix&nbsp;time</div>
+				<div class="options">
+					<div class="show_hide"><a href="javascript:void(0)" id="show_hide_options">options</a></div>
+					<div class="dialog">
+						<div class="format">
+							<strong>in:</strong>&nbsp;
+							<input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label>&nbsp;
+							<input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label>
+						</div>
 					</div>
 				</div>
 				<div class="curly_brace"></div>
-				<div class="input"><input id="unix_time" type="text" /></div>
+				<div class="input"><input id="unix_time" type="text" autocomplete="off" /></div>
+				<div class="output"></div>
 			</div>
-			<div class="to_from">
-				<strong>to</strong>&nbsp;/&nbsp;<a href="javascript:void(0)" id="from">from</a>
-			</div>
+			<div class="swap"><a href="javascript:void(0)" id="swap">swap</a></div>
 			<div class="human_time">
-				<div class="explanation"><a href="javascript:void(0)" id="human_time">human time</a><div class="format"><input id="human_format" type="text" /></div></div>
-				<div class="location_select">
-					in
-					<input type="radio" name="time_zone" value="local" id="local"/> <label for="local">local time</label>
-					<input type="radio" name="time_zone" value="utc" id="utc"/> <label for="utc">UTC</label>
-					<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">City</label>
-					<input id="time_location" type="text" placeholder="e.g. Pittsburgh, PA"/>
+				<div class="explanation">human&nbsp;time</div>
+				<div class="options">
+					<div class="show_hide"><a href="javascript:void(0)" id="show_hide_options">options</a></div>
+					<div class="dialog">
+						<div class="format">
+							format <a target="momentjs_display_format" href="http://momentjs.com/docs/#/display/format">(?)</a>: <div class="format"><input id="human_format" type="text" /></div>
+						</div>
+						<hr />
+						<div class="location_select">
+							time zone:
+							<div class="local"><input type="radio" name="time_zone" value="local" id="local"/> <label for="local">local</label></div>
+							<div class="utc"><input type="radio" name="time_zone" value="utc" id="utc"/> <label for="utc">UTC</label></div>
+							<div class="city">
+								<span class="radio_label">
+									<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">City</label>
+								</span>
+								<input id="time_location" type="text" placeholder="e.g. Pittsburgh, PA" autocomplete="off"/>
+								<div class="time_location_details"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="curly_brace"></div>
-				<div class="human_output"></div>
+				<div class="input">
+					<input id="human_time" type="text" autocomplete="off" />
+				</div>
+				<div class="output"></div>
 			</div>
 		</div>
 
