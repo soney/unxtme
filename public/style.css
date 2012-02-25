@@ -1,0 +1,92 @@
+body {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-weight: 300;
+	text-align: center;
+}
+
+h1 {
+	font-weight: bold;
+	font-size: 7em;
+	letter-spacing: -0.10em;
+	text-transform: uppercase;
+	margin: 0px;
+}
+
+div.converts {
+	font-size: 4.4em;
+	text-transform: uppercase;
+	position: relative;
+	top: -30px;
+}
+
+div.unix_time {
+}
+
+div.unix_time div.explanation {
+	font-size: 2em;
+	text-transform: uppercase;
+}
+
+input#unix_time {
+	border: 1px solid black;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 2em;
+	text-align: center;
+}
+
+div.to_from {
+	font-size: 2em;
+	text-transform: uppercase;
+}
+
+div.footer {
+	font-size: 0.8em;
+	text-align: right;
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+div.location_select {
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+div.human_time div.explanation {
+	font-size: 2em;
+	text-transform: uppercase;
+}
+
+input#unix_time {
+	border: 1px solid black;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 2em;
+	text-align: center;
+}
+
+div.to_from {
+	font-size: 2em;
+	text-transform: uppercase;
+}
+
+div.footer {
+	font-size: 0.8em;
+	text-align: right;
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+div.location_select {
+	font-size: 1.2em;
+}
+
+input#time_location {
+	border: 1px solid black;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	font-size: 1.2em;
+}
+
+a {
+	text-decoration: none;
+}
