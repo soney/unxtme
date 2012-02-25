@@ -3,7 +3,7 @@ $(function() {
 	var cached_options = {
 		unix_time: Math.round(((new Date()).getTime())/1000.0) 
 		, human_time: ""
-		, format: "LLLL"
+		, format: "dddd, MMMM D YYYY h:mm:ss A"
 		, unix_format: "seconds"
 		, time_zone: "local"
 		, tz_info: null

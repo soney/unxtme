@@ -73,10 +73,10 @@ div.explanation {
 }
 
 div.swap {
-	margin-top: 50px;
+	margin-top: 35px;
 	text-transform: uppercase;
-	margin-bottom: 50px;
-	font-size: 0.8em;
+	margin-bottom: 35px;
+	font-size: 0.9em;
 	position: relative;
 	top: -0.1em;
 }
@@ -127,7 +127,7 @@ div.footer div.sitename {
 
 a#options {
 	text-transform: uppercase;
-	font-size: 0.7em;
+	font-size: 0.9em;
 	position: relative;
 	top: -5px;
 }
@@ -145,7 +145,7 @@ div.dialog input {
 }
 
 input#human_time {
-	width: 17em;
+	width: 19em;
 	text-align: center;
 }
 
@@ -156,9 +156,8 @@ input#time_location {
 	padding-top: 1px;
 	padding-bottom: 1px;
 	margin: 0px;
-	font-size: 1.1em;
 	position: relative;
-	top: -2px;
+	top: -8px;
 }
 
 div.city span.radio_label {
@@ -179,6 +178,7 @@ div.options {
 
 input#human_format {
 	text-align: center;
+	width: 17em;
 }
 
 div.dialog hr {
