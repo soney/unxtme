@@ -11,32 +11,37 @@
 	</head>
 	<body>
 		<div class="content">
-			<h1>unxt.me</h1>
-			<div class="converts">converts</div>
 			<div class="unix_time">
 				<div class="explanation">
 					<a href="javascript:void(0)" id="unix_time_explanation" alt="Seconds since midnight January 1, 1970 UTC">unix&nbsp;time</a>
 					<div class="format">
-						<form>
-							<input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label>
-							<input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label>
-						</form>
+						<input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label>
+						<input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label>
 					</div>
 				</div>
 				<div class="curly_brace"></div>
 				<div class="input"><input id="unix_time" type="text" /></div>
 			</div>
 			<div class="to_from">
-				to&nbsp;/&nbsp;<a href="javascript:void(0)" id="from">from</a>
+				<strong>to</strong>&nbsp;/&nbsp;<a href="javascript:void(0)" id="from">from</a>
 			</div>
 			<div class="human_time">
 				<div class="explanation"><a href="javascript:void(0)" id="human_time">human time</a><div class="format"><input id="human_format" type="text" /></div></div>
-				<div class="location_select">in <input id="time_location" type="text" /></div>
+				<div class="location_select">
+					in
+					<input type="radio" name="time_zone" value="local" id="local"/> <label for="local">local time</label>
+					<input type="radio" name="time_zone" value="utc" id="utc"/> <label for="utc">UTC</label>
+					<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">City</label>
+					<input id="time_location" type="text" placeholder="e.g. Pittsburgh, PA"/>
+				</div>
 				<div class="curly_brace"></div>
 				<div class="human_output"></div>
 			</div>
 		</div>
 
-		<div class="footer">&copy; 2012 <a href="http://www.stephenoney.com/">Stephen Oney</a></div>
+		<div class="footer">
+			<div class="sitename"><a href="http://unxt.me">unxt.me</a></div>
+			<div class="copyright">&copy; 2012 <a href="http://www.stephenoney.com/">Stephen Oney</a></div>
+		</div>
 	</body>
 </html>

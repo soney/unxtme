@@ -3,18 +3,46 @@ $(function() {
 		unix_time: ""
 		, format: "ddd MMM D, YYYY h:mm:ss a"
 		, unix_format: "seconds"
+		, time_zone: "local"
+		, tz_info: null
+	};
+	var hide_human_display = function() {
+		$("div.human_output").text("");
 	};
 	var update_human_display = function(options) {
 		options = _.extend(cached_options, options);
-		if(_.all(["unix_time", "format", "unix_format"], function(prop) {
+		if(_.all(["unix_time", "format", "unix_format", "time_zone", "tz_info"], function(prop) {
 				return _.has(options, prop);
 			})) {
-			var multiplier = 1;
-			if(options.unix_format === "seconds") { multiplier = 1000; }
-			var unix_moment = moment(options.unix_time*multiplier);
+			var unix_time = parseFloat(options.unix_time);
+
+			if(_.isNaN(unix_time)) {
+				hide_human_display();
+				return;
+			}
+
+			if(options.unix_format === "seconds") {
+				unix_time *= 1000;
+			}
+
+			if(options.time_zone === "utc") {
+				unix_time += moment().zone() * 60 * 1000;
+			} else if(options.time_zone === "city") {
+				if(_.isNull(options.tz_info)) {
+					hide_human_display();
+					return;
+				} else {
+					unix_time += moment().zone() * 60 * 1000;
+					unix_time -= parseFloat(options.tz_info.time_offset);
+				}
+			}
+
+			var unix_moment = moment(unix_time);
 			var formatted_time = unix_moment.format(options.format)
 
 			$("div.human_output").text(formatted_time);
+		} else {
+			hide_human_display();
 		}
 	};
 
@@ -27,28 +55,83 @@ $(function() {
 														update_human_display({unix_format: value});
 													}
 												});
-		$("input:radio[name=unix_format]#"+cached_options.unix_format).attr("checked", true);
+		$("input:radio[name=unix_format]#"+cached_options.unix_format).attr("checked", true).change();
 	}());
 
 	(function() {
-		var on_unix_input_change = function(value) {
-			update_human_display({unix_time: value});
-		};
+		var time_zone;
+		$("input:radio[name=time_zone]").change(function() {
+													var value = $(this).val();
+													if(time_zone !== value) {
+														time_zone = value;
+														update_human_display({time_zone: value});
+													}
+												});
+		$("input:radio[name=time_zone]#"+cached_options.time_zone).attr("checked", true).change();
+	}());
 
-	/*
-		var display_placeholder = false;
-		var update_current_unix_time = function() {
-			if(display_placeholder) {
-				var unix_time = Math.round((new Date()).getTime()/1000);
-				$("input#unix_time").attr("placeholder", unix_time);
-			} else {
-				$("input#unix_time").attr("placeholder", "");
+	(function() {
+		var city_input="";
+		var ajax_timeout;
+		$("input:radio[name=time_zone]").change(function() {
+			if(!$("input:radio[name=time_zone]#city").attr("checked")) {
+				$("input#time_location").removeClass("error success pending");
 			}
-		};
+		});
+		$("input#time_location") .on("focus", function() {
+								$("input:radio[name=time_zone]#city").attr("checked", true).change();
+							})
+							.keydown(function() {
+								_.defer(_.bind(function() {
+									$(this).change();
+								}, this))
+							})
+							.change(function() {
+								var value = $(this).val();
+								if(city_input !== value) {
+									city_input = value;
+									update_human_display({tz_info: null});
+									$("input#time_location").removeClass("error success")
+															.addClass("pending");
+									window.clearTimeout(ajax_timeout);
+									ajax_timeout = window.setTimeout(_.bind(function(value) {
+										$.ajax("/tz", {
+											data: {
+												q: value
+											}
 
-		window.setInterval(update_current_unix_time, 1000);
-		*/
+											, success: function(data) {
+												if(data.status === "error") {
+													update_human_display({tz_info: null});
+													if($("input:radio[name=time_zone]#city").attr("checked")) {
+														$("input#time_location").removeClass("success pending")
+																				.addClass("error");
+													}
+												} else {
+													update_human_display({tz_info: data});
+													if($("input:radio[name=time_zone]#city").attr("checked")) {
+														$("input#time_location").removeClass("error pending")
+																				.addClass("success");
+													}
+												}
+											}
+											, error: function(data) {
+												update_human_display({tz_info: null});
+												if($("input:radio[name=time_zone]#city").attr("checked")) {
+													$("input#time_location").removeClass("success pending")
+																			.addClass("error");
+												}
+											}
+										});
+									}, this, value), 500);
+								}
+							});
+		window.setInterval(function() {
+			$("input#time_location").change();
+		}, 500);
+	}());
 
+	(function() {
 		var unix_timestamp_input;
 		$("input#unix_time").focus()
 							.on("mouseup.select", function() {
@@ -65,21 +148,10 @@ $(function() {
 								var value = $(this).val();
 								if(unix_timestamp_input !== value) {
 									unix_timestamp_input = value;
-									on_unix_input_change(value);
+									update_human_display({unix_time: value});
 								}
 							})
 							.change()
-							/*
-							.on("focus", function() {
-								display_placeholder = false;
-								$("input#unix_time").attr("placeholder", "");
-							})
-							.on("blur", function() {
-								display_placeholder = unix_timestamp_input === "";
-								update_current_unix_time();
-							})
-							.val(Math.round((new Date()).getTime()/1000))
-							*/
 							.select();
 		window.setInterval(function() {
 			$("input#unix_time").change();
@@ -111,44 +183,4 @@ $(function() {
 			$("input#human_format").change();
 		}, 500);
 	}());
-
-	(function() {
-		/*
-		var geocoder = new google.maps.Geocoder();
-		geocoder.geocode( { 'address': "5407 Friendship Ave. Pittsburgh, PA"}, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				console.log(results);
-				var lat = results[0].geometry.location.Sa;
-				var long = results[0].geometry.location.Ta;
-				$.ajax("http://www.askgeo.com/api/1010025/pbdiiur0eqegh22sj9cu2dklh0/timezone.json", {
-					data: {
-						points: lat+","+long
-					}
-					, success: function(message) {
-						console.log("success", message);
-					}, error: function(message) {
-						console.log("error", message);
-					}
-				});
-			} else {
-				alert("Geocode was not successful for the following reason: " + status);
-			}
-		});
-		*/
-		$.ajax("http://maps.googleapis.com/maps/api/geocode/json"
-			, {
-				data: {
-					address: "5407 Friendship Ave Pittsburgh, PA"
-					, sensor: false
-				}
-				, success: function(data) {
-					console.log("Success");
-				}
-				, error: function(data) {
-					console.log("Error");
-				}
-				, crossDomain: true
-			});
-	}());
-
 });

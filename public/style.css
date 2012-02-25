@@ -4,20 +4,6 @@ body {
 	text-align: center;
 }
 
-h1 {
-	font-weight: bold;
-	font-size: 7em;
-	letter-spacing: -0.10em;
-	text-transform: uppercase;
-	margin: 0px;
-}
-
-div.converts {
-	font-size: 4.4em;
-	text-transform: uppercase;
-	position: relative;
-	top: -30px;
-}
 
 div.unix_time {
 }
@@ -37,6 +23,16 @@ input#unix_time {
 div.to_from {
 	font-size: 2em;
 	text-transform: uppercase;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+div.to_from strong {
+	font-weight: bold;
+}
+
+div.to_from a#from {
+	opacity: 0.5;
 }
 
 
@@ -62,13 +58,6 @@ div.to_from {
 	text-transform: uppercase;
 }
 
-div.footer {
-	font-size: 0.8em;
-	text-align: right;
-	position: static;
-	bottom: 20px;
-	right: 20px;
-}
 
 div.location_select {
 	font-size: 1.2em;
@@ -86,4 +75,32 @@ a {
 
 div.human_output {
 	font-size: 2em;
+}
+
+div.footer {
+	font-size: 0.8em;
+	text-align: right;
+	position: static;
+	bottom: 20px;
+	right: 20px;
+}
+
+div.footer div.sitename {
+	font-weight: bold;
+	font-size: 2em;
+	letter-spacing: -0.10em;
+	text-transform: uppercase;
+}
+
+div.footer div.sitename a {
+}
+
+input#time_location.success {
+	border: 1px solid green;
+}
+input#time_location.pending {
+	border: 1px solid yellow;
+}
+input#time_location.error {
+	border: 1px solid red;
 }
