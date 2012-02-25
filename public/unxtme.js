@@ -76,7 +76,7 @@ $(function() {
 					return;
 				} else {
 					unix_time += moment().zone() * 60 * 1000;
-					unix_time -= parseFloat(options.tz_info.time_offset);
+					unix_time += parseFloat(options.tz_info.time_offset);
 				}
 			}
 
@@ -113,7 +113,7 @@ $(function() {
 						return;
 					} else {
 						unix_time -= moment().zone() * 60 * 1000;
-						unix_time += parseFloat(options.tz_info.time_offset);
+						unix_time -= parseFloat(options.tz_info.time_offset);
 					}
 				}
 
@@ -308,7 +308,7 @@ $(function() {
 			$("div.human_time div.input").hide();
 			$("div.human_time div.output").show();
 
-			$("div.human_time div.options").show();
+			$("input#human_format").attr("disabled", false);
 		} else {
 			$("div.unix_time").appendTo("div.content");
 			$("div.human_time").prependTo("div.content");
@@ -318,7 +318,7 @@ $(function() {
 			$("div.human_time div.input").show();
 			$("div.human_time div.output").hide();
 			
-			$("div.human_time div.options").hide();
+			$("input#human_format").attr("disabled", true);
 		}
 		$("div.input:visible input").focus().select();
 		update_display();

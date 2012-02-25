@@ -22,6 +22,12 @@ div.content {
 
 input {
 	border: 1px solid black;
+	border-radius: 2px;
+}
+input[disabled='disabled'] {
+	color: #999;
+	background-color: #EEE;
+	border: 1px solid #AAA;
 }
 
 input.error {
@@ -35,20 +41,25 @@ input#unix_time {
 }
 
 div.output {
-	font-size: 2em;
+	font-size: 1.7em;
 }
 
 div.input input {
-	font-size: 2em;
+	font-size: 1.7em;
 }
 
 a {
 	text-decoration: none;
-	color: #999;
+	color: #3697B3;
+	-webkit-transition: color 0.5s ease-in-out;
+	-moz-transition: color 0.5s ease-in-out;
+	-o-transition: color 0.5s ease-in-out;
+	-ms-transition: color 0.5s ease-in-out;
+	transition: color 0.5s ease-in-out;
 }
 
 a:hover {
-	color: #77E;
+	color: #46A7C3;
 }
 
 ::-webkit-input-placeholder  { color:#BBB; }
@@ -99,6 +110,14 @@ div.footer {
 	color: #CCC;
 }
 
+div.footer a {
+	color: #999;
+}
+
+div.footer a:hover {
+	color: #46A7C3;
+}
+
 div.footer div.sitename {
 	font-weight: bold;
 	font-size: 2em;
@@ -115,7 +134,7 @@ a#options {
 
 div.dialog {
 	text-transform: uppercase;
-	background-color: #F9F9F9;
+	background-color: #F0F0F0;
 	font-size: 1.2em;
 	padding: 10px;
 	overflow: hidden;
@@ -163,5 +182,12 @@ input#human_format {
 }
 
 div.dialog hr {
+	border: 1px solid #E7E7E7;
+}
+
+div.box {
 	border: 1px solid #EEE;
+	padding: 20px;
+	background-color: #F9F9F9;
+	border-radius: 5px;
 }
