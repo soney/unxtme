@@ -90,3 +90,8 @@ input#time_location {
 a {
 	text-decoration: none;
 }
+
+div.human_output {
+	text-transform: uppercase;
+	font-size: 2em;
+}
