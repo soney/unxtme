@@ -41,16 +41,16 @@ app.get("/tz", function(req, response, next) {
 					points: lat+","+lng
 				})
 			}, function(res) {
-				if(res.code !== 0) {
-					respond({status: "error", type: "askgeo"});
-					return;
-				}
 				var askData = "";
 				res.on('data', function (chunk) {
 				  askData += chunk;
 				});
 				res.on('end', function() {
 					var askgeo_response = JSON.parse(askData);
+					if(askgeo_response.code !== 0) {
+						respond({status: "error", type: "askgeo"});
+						return;
+					}
 
 					var timezone = askgeo_response.data[0].timeZone;
 					var time_offset = askgeo_response.data[0].currentOffsetMs;
