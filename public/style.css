@@ -39,13 +39,6 @@ div.to_from {
 	text-transform: uppercase;
 }
 
-div.footer {
-	font-size: 0.8em;
-	text-align: right;
-	position: absolute;
-	bottom: 20px;
-	right: 20px;
-}
 
 div.location_select {
 	font-size: 1.2em;
@@ -72,7 +65,7 @@ div.to_from {
 div.footer {
 	font-size: 0.8em;
 	text-align: right;
-	position: absolute;
+	position: static;
 	bottom: 20px;
 	right: 20px;
 }

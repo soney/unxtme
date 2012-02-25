@@ -113,6 +113,28 @@ $(function() {
 	}());
 
 	(function() {
+		/*
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( { 'address': "5407 Friendship Ave. Pittsburgh, PA"}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				console.log(results);
+				var lat = results[0].geometry.location.Sa;
+				var long = results[0].geometry.location.Ta;
+				$.ajax("http://www.askgeo.com/api/1010025/pbdiiur0eqegh22sj9cu2dklh0/timezone.json", {
+					data: {
+						points: lat+","+long
+					}
+					, success: function(message) {
+						console.log("success", message);
+					}, error: function(message) {
+						console.log("error", message);
+					}
+				});
+			} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+		});
+		*/
 		$.ajax("http://maps.googleapis.com/maps/api/geocode/json"
 			, {
 				data: {
@@ -125,6 +147,7 @@ $(function() {
 				, error: function(data) {
 					console.log("Error");
 				}
+				, crossDomain: true
 			});
 	}());
 
