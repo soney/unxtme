@@ -1,8 +1,10 @@
 var express = require("express");
 var http = require("http");
 var querystring = require("querystring");
+var time = require("time");
 
 var app = express.createServer();
+var cached_askgeo_responses = {};
 app.get("/tz", function(req, response, next) {
 	var respond = function(d) {
 		response.writeHead(200, {'content-type': 'text/json' });
@@ -10,6 +12,26 @@ app.get("/tz", function(req, response, next) {
 		response.end("\n")
 	};
 	var query = req.query.q;
+	var t = parseFloat(req.query.t);
+	var q_date = new time.Date(t);
+
+	if(cached_askgeo_responses.hasOwnProperty(query)) {
+		var new_response = {};
+		var cached_response = cached_askgeo_responses[query];
+
+		for(key in cached_response) {
+			if(cached_response.hasOwnProperty(key)) {
+				new_response[key] = cached_response[key];
+			}
+		}
+		q_date.setTimezone(cached_response.timezone);
+		console.log(cached_response.timezone);
+		new_response["timezoneAbbr"] = q_date.getTimezoneAbbr();
+		new_response["timezoneOffset"] = q_date.getTimezoneOffset();
+		respond(new_response);
+		return;
+	}
+
 	http.get({
 		host: "maps.googleapis.com"
 		, port: 80
@@ -56,13 +78,26 @@ app.get("/tz", function(req, response, next) {
 					var time_offset = askgeo_response.data[0].currentOffsetMs;
 					var timezone_name = askgeo_response.data[0].windowsStandardName;
 
-					respond({
+					var askgeo_response = {
 						status: "ok"
 						, formatted_addres: formatted_address
 						, timezone: timezone
 						, time_offset: time_offset
 						, timezone_name: timezone_name
-					});
+					};
+					cached_askgeo_responses[query] = askgeo_response;
+
+					var new_response = {};
+
+					for(key in askgeo_response) {
+						if(askgeo_response.hasOwnProperty(key)) {
+							new_response[key] = askgeo_response[key];
+						}
+					}
+					q_date.setTimezone(askgeo_response.timezone);
+					new_response["timezoneAbbr"] = q_date.getTimezoneAbbr();
+					new_response["timezoneOffset"] = q_date.getTimezoneOffset();
+					respond(new_response);
 				});
 			}, function(res) {
 				respond({status: "error", type: "askgeo_ajax"});

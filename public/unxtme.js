@@ -113,7 +113,7 @@ $(function() {
 						return;
 					} else {
 						unix_time -= moment().zone() * 60 * 1000;
-						unix_time -= parseFloat(options.tz_info.time_offset);
+						unix_time -= parseFloat(options.tz_info.timezoneOffset);
 					}
 				}
 
@@ -153,6 +153,8 @@ $(function() {
 
 	(function() {
 		var city_input=cached_options.city_input;
+		var unix_timestamp_input = cached_options.unix_time;
+		var human_time = cached_options.human_time;
 		var ajax_timeout;
 		$("input:radio[name=time_zone]").change(function() {
 			if(!$("input:radio[name=time_zone]#city").attr("checked")) {
@@ -178,50 +180,73 @@ $(function() {
 										}, this))
 									})
 									.val(city_input)
+									.add("input#unix_time, input#human_time")
 									.change(function() {
-										var value = $(this).val();
-										if(city_input !== value) {
-											city_input = value;
-											update_display({tz_info: null, city_input: value});
-											$("input#time_location").removeClass("error success")
-																	.addClass("pending");
-											$("div.time_location_details").text("");
-											window.clearTimeout(ajax_timeout);
-											ajax_timeout = window.setTimeout(_.bind(function(value) {
-												$.ajax("/tz", {
-													data: {
-														q: value
-													}
+										if($("input:radio[name=time_zone]#city").attr("checked")) {
+											var civ = $("input#time_location").val();
+											var uiv = $("input#unix_time").val();
+											var hiv = $("input#human_time").val();
 
-													, success: function(data) {
-														if(data.status === "error") {
-															update_display({tz_info: null, city_input: value});
+											var tval;
+
+											if(converting_from === "unix") {
+												tval = parseFloat(uiv);
+												if($("input:radio#seconds").is(":checked")) {
+													tval *= 1000;
+												}
+											} else {
+												tval = Date.parse(hiv).getTime();
+											}
+
+
+
+											if(civ !== city_input || uiv !== unix_timestamp_input || hiv !== human_time) {
+												city_input = civ;
+												unix_timestamp_input = uiv;
+												human_time = hiv;
+
+												update_display({tz_info: null, city_input: civ});
+												$("input#time_location").removeClass("error success")
+																		.addClass("pending");
+												$("span.time_location_details").text("");
+												window.clearTimeout(ajax_timeout);
+												ajax_timeout = window.setTimeout(_.bind(function(civ, tval) {
+													$.ajax("/tz", {
+														data: {
+															q: civ
+															, t: tval
+														}
+
+														, success: function(data) {
+															if(data.status === "error") {
+																update_display({tz_info: null, city_input: civ});
+																if($("input:radio[name=time_zone]#city").attr("checked")) {
+																	$("input#time_location").removeClass("success pending")
+																							.addClass("error");
+																}
+															} else {
+																update_display({tz_info: data, city_input: civ});
+																if($("input:radio[name=time_zone]#city").attr("checked")) {
+																	$("input#time_location").removeClass("error pending")
+																							.addClass("success");
+																	$("span.time_location_details").text(data.timezoneAbbr);
+																	_.delay(function() {
+																		$("input#time_location").removeClass("success");
+																	}, 2000);
+																}
+															}
+														}
+														, error: function(data) {
+															update_display({tz_info: null, city_input: civ});
 															if($("input:radio[name=time_zone]#city").attr("checked")) {
 																$("input#time_location").removeClass("success pending")
 																						.addClass("error");
 															}
-														} else {
-															update_display({tz_info: data, city_input: value});
-															if($("input:radio[name=time_zone]#city").attr("checked")) {
-																$("input#time_location").removeClass("error pending")
-																						.addClass("success");
-																$("div.time_location_details").text(data.timezone_name);
-																_.delay(function() {
-																	$("input#time_location").removeClass("success");
-																}, 2000);
-															}
 														}
-													}
-													, error: function(data) {
-														update_display({tz_info: null, city_input: value});
-														if($("input:radio[name=time_zone]#city").attr("checked")) {
-															$("input#time_location").removeClass("success pending")
-																					.addClass("error");
-														}
-													}
-												});
-											}, this, value), 500);
-								}
+													});
+												}, this, civ, tval), 500);
+											}
+										}
 							});
 		window.setInterval(function() {
 			$("input#time_location").change();
@@ -326,8 +351,8 @@ $(function() {
 	update_converting();
 
 	(function() {
-		var human_time = cached_options.human_time;
-		$("input#human_time")	.val(human_time)
+		var human_format = cached_options.human_format;
+		$("input#human_time")	.val(human_format)
 								.on("focus", function() {
 										$(this).one("mouseup.select", 
 												function() {
