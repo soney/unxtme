@@ -168,10 +168,9 @@ div.city span.radio_label {
 	width: 4em;
 }
 
-span.time_location_details {
+div.time_location_details {
 	color: #AAA;
-	position: relative;
-	top: -8px;
+	padding-left: 4em;
 }
 
 div.options {

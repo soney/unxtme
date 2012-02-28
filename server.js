@@ -74,15 +74,12 @@ app.get("/tz", function(req, response, next) {
 					}
 
 					var timezone = askgeo_response.data[0].timeZone;
-					var time_offset = askgeo_response.data[0].currentOffsetMs;
 					var timezone_name = askgeo_response.data[0].windowsStandardName;
 
 					var askgeo_response = {
 						status: "ok"
-						, formatted_addres: formatted_address
+						, formatted_address: formatted_address
 						, timezone: timezone
-						, time_offset: time_offset
-						, timezone_name: timezone_name
 					};
 					cached_askgeo_responses[query] = askgeo_response;
 
