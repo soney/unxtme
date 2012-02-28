@@ -11,6 +11,49 @@ $(function() {
 		, city_input: ""
 	};
 
+	$.fn.clickSelected = function() {
+		return this.each(function() {
+			var $this = $(this);
+			$this.on("focus", function() {
+				$this.one("mouseup.select", 
+						function() {
+							_.defer(function() {
+								$this.select();
+							})
+					});
+
+				_.delay(function() {
+					$this.off("mouseup.select");
+				}, 2000);
+			});
+		});
+	};
+
+	$.fn.addChangeListeners = function() {
+		return this.each(function() {
+			var $this = $(this);
+			var val = $this.val();
+
+			$this.keydown(function() {
+				_.defer(function() {
+					var new_val = $this.val();
+					if(new_val !== val) {
+						val = new_val;
+						$this.change();
+					}
+				})
+			});
+
+			window.setInterval(function() {
+				var new_val = $this.val();
+				if(new_val !== val) {
+					val = new_val;
+					$this.change();
+				}
+			}, 1000);
+		});
+	};
+
 	var save_state = function() { };
 	if(_.has(window, "localStorage")) {
 		var stringified_state = localStorage.getItem("state");
@@ -128,30 +171,6 @@ $(function() {
 
 
 	(function() {
-		var unix_format;
-		$("input:radio[name=unix_format]").change(function() {
-													var value = $(this).val();
-													if(unix_format !== value) {
-														unix_format = value;
-														update_display({unix_format: value});
-													}
-												});
-		$("input:radio[name=unix_format]#"+cached_options.unix_format).attr("checked", true).change();
-	}());
-
-	(function() {
-		var time_zone;
-		$("input:radio[name=time_zone]").change(function() {
-													var value = $(this).val();
-													if(time_zone !== value) {
-														time_zone = value;
-														update_display({time_zone: value});
-													}
-												});
-		$("input:radio[name=time_zone]#"+cached_options.time_zone).attr("checked", true).change();
-	}());
-
-	(function() {
 		var city_input=cached_options.city_input;
 		var unix_timestamp_input = cached_options.unix_time;
 		var human_time = cached_options.human_time;
@@ -163,22 +182,9 @@ $(function() {
 		});
 		$("input#time_location")	.on("focus", function() {
 										$("input:radio[name=time_zone]#city").attr("checked", true).change();
-										$(this).one("mouseup.select", 
-												function() {
-													_.defer(_.bind(function() {
-														$(this).select();
-													}, this))
-											});
-
-										_.delay(function() {
-											$(this).off("mouseup.select");
-										}, 2000, this);
 									})
-									.keydown(function() {
-										_.defer(_.bind(function() {
-											$(this).change();
-										}, this))
-									})
+									.clickSelected()
+									.addChangeListeners()
 									.val(city_input)
 									.add("input#unix_time, input#human_time")
 									.change(function() {
@@ -197,8 +203,6 @@ $(function() {
 											} else {
 												tval = Date.parse(hiv).getTime();
 											}
-
-
 
 											if(civ !== city_input || uiv !== unix_timestamp_input || hiv !== human_time) {
 												city_input = civ;
@@ -248,66 +252,47 @@ $(function() {
 											}
 										}
 							});
-		window.setInterval(function() {
-			$("input#time_location").change();
-		}, 500);
 	}());
 
-	(function() {
-		var unix_timestamp_input = cached_options.unix_time;
-		$("input#unix_time")	.focus()
-								.on("focus", function() {
-										$(this).one("mouseup.select", 
-												function() {
-													_.defer(_.bind(function() {
-														$(this).select();
-													}, this))
+	$("input:radio[name=unix_format]").change(function() {
+												var value = $(this).val();
+												update_display({unix_format: value});
 											});
+	$("input:radio[name=unix_format]#"+cached_options.unix_format).attr("checked", true).change();
 
-										_.delay(function() {
-											$(this).off("mouseup.select");
-										}, 2000, this);
-									})
-								.keydown(function() {
-									_.defer(_.bind(function() {
-										$(this).change();
-									}, this))
-								})
-								.change(function() {
-									var value = $(this).val();
-									if(unix_timestamp_input !== value) {
-										unix_timestamp_input = value;
-										update_display({unix_time: value});
-									}
-								})
-								.val(unix_timestamp_input)
-								.change();
-		window.setInterval(function() {
-			$("input#unix_time").change();
-		}, 500);
-	}());
+	$("input:radio[name=time_zone]").change(function() {
+												var value = $(this).val();
+												update_display({time_zone: value});
+											});
+	$("input:radio[name=time_zone]#"+cached_options.time_zone).attr("checked", true).change();
 
-	(function() {
-		var default_format = cached_options.format;
-		var human_format;
-		$("input#human_format")	.val(default_format)
-								.keydown(function() {
-									_.defer(_.bind(function() {
-										$(this).change();
-									}, this))
-								})
-								.change(function() {
-									var value = $(this).val();
-									if(human_format !== value) {
-										human_format = value;
-										update_display({format: value});
-									}
-								})
-								.change();
-		window.setInterval(function() {
-			$("input#human_format").change();
-		}, 500);
-	}());
+
+	$("input#unix_time")	.focus()
+							.clickSelected()
+							.addChangeListeners()
+							.change(function() {
+								var value = $(this).val();
+								update_display({unix_time: value});
+							})
+							.val(cached_options.unix_time)
+							.change();
+
+	$("input#human_format")	.val(cached_options.format)
+							.addChangeListeners()
+							.change(function() {
+								var value = $(this).val();
+								update_display({format: value});
+							})
+							.change();
+
+	$("input#human_time")	.val(cached_options.human_format)
+							.clickSelected()
+							.addChangeListeners()
+							.change(function() {
+								var value = $(this).val();
+								update_display({human_time: value});
+							})
+							.change();
 
 
 	$("a#swap").click(function() {
@@ -350,38 +335,6 @@ $(function() {
 	};
 	update_converting();
 
-	(function() {
-		var human_format = cached_options.human_format;
-		$("input#human_time")	.val(human_format)
-								.on("focus", function() {
-										$(this).one("mouseup.select", 
-												function() {
-													_.defer(_.bind(function() {
-														$(this).select();
-													}, this))
-											});
-
-										_.delay(function() {
-											$(this).off("mouseup.select");
-										}, 2000, this);
-									})
-								.keydown(function() {
-									_.defer(_.bind(function() {
-										$(this).change();
-									}, this))
-								})
-								.change(function() {
-									var value = $(this).val();
-									if(human_format !== value) {
-										human_format = value;
-										update_display({human_time: value});
-									}
-								})
-								.change();
-		window.setInterval(function() {
-			$("input#human_format").change();
-		}, 500);
-	}());
 
 	$("div.input:visible input").focus().select();
 

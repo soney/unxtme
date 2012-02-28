@@ -25,7 +25,6 @@ app.get("/tz", function(req, response, next) {
 			}
 		}
 		q_date.setTimezone(cached_response.timezone);
-		console.log(cached_response.timezone);
 		new_response["timezoneAbbr"] = q_date.getTimezoneAbbr();
 		new_response["timezoneOffset"] = q_date.getTimezoneOffset();
 		respond(new_response);

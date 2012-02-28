@@ -134,10 +134,12 @@ a#options {
 
 div.dialog {
 	text-transform: uppercase;
-	background-color: #F0F0F0;
+	background-color: #F3F3F3;
+	border: 1px solid #DDD;
 	font-size: 1.2em;
 	padding: 10px;
 	overflow: hidden;
+	border-radius: 3px;
 }
 
 div.dialog input {
