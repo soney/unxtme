@@ -174,10 +174,10 @@ $(function() {
 									.clickSelected()
 									.addChangeListeners()
 									.val(options.city_input);
-		var tv, ci = options.city_input;;
+		var tv, ci = options.city_input;
 
 		$("input#time_location,input#unix_time,input#human_time,input:radio[name=time_zone]").change(function() {
-										if($("input:radio[name=time_zone]#city").attr("checked")) {
+										if($("input:radio[name=time_zone]#city").is(":checked")) {
 											var tval;
 											if(options.converting_from === "unix") {
 												tval = get_unix_time();
@@ -186,7 +186,7 @@ $(function() {
 											}
 											var city_input = $("input#time_location").val();
 
-											if(tv === tval || city_input === ci) {
+											if(tv === tval && city_input === ci) {
 												return;
 											} else {
 												tv = tval;
