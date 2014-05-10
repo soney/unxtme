@@ -132,7 +132,7 @@ $(function() {
 			val = parsed_time.valueOf();
 		if(_.isNaN(val)) {
 			parsed_time = moment(options.human_time); // remove formatting setting
-			val = parsed_timex.valueOf();
+			val = parsed_time.valueOf();
 			return val || undefined;
 		} else {
 			return val;
