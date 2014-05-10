@@ -128,18 +128,22 @@ $(function() {
 		$("div.unix_time div.output").text("");
 	};
 	var get_human_time = function() {
-		var parsed_time = moment(options.human_time, options.human_format);
-		if(_.isNull(parsed_time)) {
-			return undefined;
+		var parsed_time = moment(options.human_time, options.human_format),
+			val = x.valueOf();
+		if(_.isNaN(val)) {
+			parsed_time = moment(options.human_time); // remove formatting setting
+			val = x.valueOf();
+			return val || undefined;
+		} else {
+			return val;
 		}
-		return parsed_time.valueOf();
 	};
 
 	var update_unix_display = function() {
 		var unix_time = get_human_time();
 		if(unix_time === undefined) {
 			hide_unix_display();
-			$("input#human_time").addClass("error");
+			$("inpu.t#human_time").addClass("error");
 			return;
 		} else {
 			$("input#human_time").removeClass("error");
@@ -298,7 +302,7 @@ $(function() {
 			$("div.human_time div.input").hide();
 			$("div.human_time div.output").show();
 
-			$("input#human_format").attr("disabled", false);
+			//$("input#human_format").attr("disabled", false);
 		} else {
 			$("#swap .swap_horizontal .glyphicon").removeClass("glyphicon-arrow-right").addClass("glyphicon-arrow-left");
 			$("#swap .swap_vertical .glyphicon").removeClass("glyphicon-arrow-down").addClass("glyphicon-arrow-up");
@@ -308,7 +312,7 @@ $(function() {
 			$("div.human_time div.input").show();
 			$("div.human_time div.output").hide();
 			
-			$("input#human_format").attr("disabled", true);
+			//$("input#human_format").attr("disabled", true);
 		}
 		$("div.input:visible input").focus().select();
 		update_display();
