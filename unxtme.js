@@ -128,11 +128,11 @@ $(function() {
 		$("div.unix_time div.output").text("");
 	};
 	var get_human_time = function() {
-		var parsed_time = Date.parse(options.human_time);
+		var parsed_time = moment(options.human_time, options.human_format);
 		if(_.isNull(parsed_time)) {
 			return undefined;
 		}
-		return parsed_time.getTime();
+		return parsed_time.valueOf();
 	};
 
 	var update_unix_display = function() {
