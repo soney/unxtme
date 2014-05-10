@@ -129,10 +129,10 @@ $(function() {
 	};
 	var get_human_time = function() {
 		var parsed_time = moment(options.human_time, options.human_format),
-			val = x.valueOf();
+			val = parsed_time.valueOf();
 		if(_.isNaN(val)) {
 			parsed_time = moment(options.human_time); // remove formatting setting
-			val = x.valueOf();
+			val = parsed_timex.valueOf();
 			return val || undefined;
 		} else {
 			return val;
