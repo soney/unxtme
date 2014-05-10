@@ -130,10 +130,14 @@ $(function() {
 	var get_human_time = function() {
 		var parsed_time = moment(options.human_time, options.human_format),
 			val = parsed_time.valueOf();
-		if(_.isNaN(val)) {
+		if(_.isNaN(val) || val < 0) {
 			parsed_time = moment(options.human_time); // remove formatting setting
 			val = parsed_time.valueOf();
-			return val || undefined;
+			if(_.isNaN(val) || val < 0) {
+				return undefined;
+			} else {
+				return val;
+			}
 		} else {
 			return val;
 		}
