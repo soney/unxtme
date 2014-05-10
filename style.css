@@ -3,10 +3,15 @@ html, body {
 }
 
 body {
-	text-align: center;
 	margin: 0px;
 }
 
+
+@media (min-width: 992px) {
+	body {
+		padding-top: 100px;
+	}
+}
 body, input {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-weight: 300;
@@ -21,9 +26,10 @@ div.content {
 }
 
 input {
-	border: 1px solid black;
+	border: 1px solid #333;
 	border-radius: 2px;
 }
+
 input[disabled='disabled'] {
 	color: #999;
 	background-color: #EEE;
@@ -36,8 +42,10 @@ input.error {
 	background-color: #FFEEEE;
 }
 
-input#unix_time {
+input#unix_time, input#human_time {
 	text-align: center;
+	margin: auto;
+	border: 2px solid #3697B3;
 }
 
 div.output {
@@ -51,11 +59,11 @@ div.input input {
 a {
 	text-decoration: none;
 	color: #3697B3;
-	-webkit-transition: color 0.5s ease-in-out;
-	-moz-transition: color 0.5s ease-in-out;
-	-o-transition: color 0.5s ease-in-out;
-	-ms-transition: color 0.5s ease-in-out;
-	transition: color 0.5s ease-in-out;
+	-webkit-transition: color 0.2s ease-in-out;
+	-moz-transition: color 0.2s ease-in-out;
+	-o-transition: color 0.2s ease-in-out;
+	-ms-transition: color 0.2s ease-in-out;
+	transition: color 0.2s ease-in-out;
 }
 
 a:hover {
@@ -66,25 +74,38 @@ a:hover {
 input:-moz-placeholder { color:#BBB; }
 
 div.explanation {
+	text-transform: uppercase;
 	font-size: 2em;
 	font-weight: bold;
-	text-transform: uppercase;
 	letter-spacing: -0.05em;
+	text-align: center;
 }
 
 div.swap {
 	margin-top: 35px;
 	text-transform: uppercase;
 	margin-bottom: 35px;
-	font-size: 0.9em;
 	position: relative;
-	top: -0.1em;
+	top: -5px;
+	text-align: center;
+}
+div.swap a {
+	font-size: 3em;
+   -webkit-text-stroke: 2px #3697B3;
+	text-shadow:
+		-1px -1px 0 #3697B3,  
+		1px -1px 0 #3697B3,
+		-1px 1px 0 #3697B3,
+		1px 1px 0 #3697B3;
+   color: #EEE;
+}
+div.swap a:hover {
+	color: #3697B3;
 }
 
 div.location_select {
 	text-align: left;
-	width: 70%;
-	margin: auto;
+	margin-top: 20px;
 }
 
 input {
@@ -102,23 +123,22 @@ input#time_location.pending {
 	background-color: #FFFDD0;
 }
 
-div.footer {
+footer {
+	margin-top: 60px;
 	font-size: 0.8em;
-	text-align: right;
-	position: static;
-	padding: 20px;
+	text-align: left;
 	color: #CCC;
 }
 
-div.footer a {
-	color: #999;
+footer a {
+	color: #CCC;
 }
 
-div.footer a:hover {
+footer a:hover {
 	color: #46A7C3;
 }
 
-div.footer div.sitename {
+footer div.sitename {
 	font-weight: bold;
 	font-size: 2em;
 	letter-spacing: -0.10em;
@@ -129,25 +149,22 @@ a#options {
 	text-transform: uppercase;
 	font-size: 0.9em;
 	position: relative;
-	top: -5px;
+	top: 5px;
 }
 
 div.dialog {
-	text-transform: uppercase;
-	background-color: #F3F3F3;
-	border: 1px solid #DDD;
-	font-size: 1.2em;
-	padding: 10px;
-	overflow: hidden;
-	border-radius: 3px;
+	padding-top: 20px;
+	color: #888;
+	font-size: 0.9em;
 }
 
 div.dialog input {
-	font-size: 1.2em;
+	border: 1px solid #AAA;
+	color: #888;
 }
 
 input#human_time {
-	width: 19em;
+	width: 17em;
 	text-align: center;
 }
 
@@ -159,23 +176,25 @@ input#time_location {
 	padding-bottom: 1px;
 	margin: 0px;
 	position: relative;
-	top: -8px;
+	top: -3px;
 }
 
 div.city span.radio_label {
-	display: inline-block;
-	float: left;
-	width: 4em;
+	margin-right: 15px;
+}
+
+div.dialog label {
+	font-weight: 300;
 }
 
 div.time_location_details {
 	color: #AAA;
-	padding-left: 4em;
 }
 
 div.options {
+	text-align: left;
 	position: relative;
-	top: -3px;
+	top: 10px;
 }
 
 input#human_format {
@@ -188,8 +207,12 @@ div.dialog hr {
 }
 
 div.box {
-	border: 1px solid #EEE;
-	padding: 20px;
-	background-color: #F9F9F9;
+	text-align: center;
 	border-radius: 5px;
+}
+div.head {
+	padding-top: 15px;
+	height: 110px;
+	background-color: #F8F8F8;
+	border-bottom: 1px solid #DDD;
 }

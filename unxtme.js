@@ -1,15 +1,16 @@
 $(function() {
 	var options = {
-		unix_time: Math.round(((new Date()).getTime())/1000.0) 
-		, human_time: ""
-		, human_format: "dddd, MMMM D YYYY h:mm:ss A"
-		, unix_format: "seconds"
-		, time_zone: "local"
-		, tz_info: null
-		, human_time: ""
-		, city_input: ""
-		, converting_from: "unix"
-	};
+			unix_time: Math.round(((new Date()).getTime())/1000.0) 
+			, human_time: ""
+			, human_format: "dddd, MMMM D YYYY h:mm:ss A"
+			, unix_format: "seconds"
+			, time_zone: "local"
+			, tz_info: null
+			, human_time: ""
+			, city_input: ""
+			, converting_from: "unix"
+		},
+		cached_tz_values = {};
 
 	$.fn.clickSelected = function() {
 		return this.each(function() {
@@ -89,7 +90,7 @@ $(function() {
 		} else if(options.time_zone === "city") {
 			if(!_.isNull(options.tz_info)) {
 				offset += moment().zone() * 60 * 1000;
-				offset -= parseFloat(options.tz_info.timezoneOffset) * 60 * 1000;
+				offset += parseFloat(options.tz_info.rawOffset + options.tz_info.dstOffset) * 1000;
 			}
 		}
 		return offset;
@@ -198,42 +199,34 @@ $(function() {
 																	.addClass("pending");
 											$("div.time_location_details").text("");
 											window.clearTimeout(ajax_timeout);
-											ajax_timeout = window.setTimeout(_.bind(function(city_input, tval) {
-												$.ajax("/tz", {
-													data: {
-														q: city_input
-														, t: tval
+											var on_data = function(data) {
+												if(data.status === "error") {
+													update_options({tz_info: null, city_input: city_input});
+													if($("input:radio[name=time_zone]#city").attr("checked")) {
+														$("input#time_location").removeClass("success pending")
+																				.addClass("error");
 													}
+												} else {
+													update_options({tz_info: data, city_input: city_input});
+													if($("input:radio[name=time_zone]#city").attr("checked")) {
+														$("input#time_location").removeClass("error pending")
+																				.addClass("success");
+														var offset= -0.1*Math.round(10*(data.rawOffset + data.dstOffset)/3600);
+														var offset_str;
+														if(offset> 0) { offset_str = "+" + offset; }
+														else { offset_str = String(offset); }
+														$("div.time_location_details").text(data.timeZoneId + " (" + data.timeZoneName + ", UTC" + offset_str + ")");
 
-													, success: function(data) {
-														if(data.status === "error") {
-															update_options({tz_info: null, city_input: city_input});
-															if($("input:radio[name=time_zone]#city").attr("checked")) {
-																$("input#time_location").removeClass("success pending")
-																						.addClass("error");
-															}
-														} else {
-															update_options({tz_info: data, city_input: city_input});
-															if($("input:radio[name=time_zone]#city").attr("checked")) {
-																$("input#time_location").removeClass("error pending")
-																						.addClass("success");
-																var offset= Math.round(-data.timezoneOffset/60.0);
-																var offset_str;
-																if(offset> 0) { offset_str = "+" + offset; }
-																else { offset_str = String(offset); }
-																$("div.time_location_details").text(data.formatted_address + " (" + data.timezoneAbbr + ", UTC" + offset_str + ")");
-																_.delay(function() {
-																	$("input#time_location").removeClass("success");
-																}, 2000);
-															}
-														}
+														_.delay(function() {
+															$("input#time_location").removeClass("success");
+														}, 2000);
 													}
-													, error: function(data) {
-														update_options({tz_info: null, city_input: city_input});
-														if($("input:radio[name=time_zone]#city").attr("checked")) {
-															$("input#time_location").removeClass("success pending")
-																					.addClass("error");
-														}
+												}
+											};
+											ajax_timeout = window.setTimeout(_.bind(function(city_input, tval) {
+												get_timezone(city_input, tval/1000, function(err, tz_info) {
+													if(!err) {
+														on_data(tz_info);
 													}
 												});
 											}, this, city_input, tval), 500);
@@ -297,8 +290,8 @@ $(function() {
 
 	var update_converting = function() {
 		if(options.converting_from === "unix") {
-			$("div.human_time").appendTo("div.content");
-			$("div.unix_time").prependTo("div.content");
+			$("#swap .swap_horizontal .glyphicon").removeClass("glyphicon-arrow-left").addClass("glyphicon-arrow-right");
+			$("#swap .swap_vertical .glyphicon").removeClass("glyphicon-arrow-up").addClass("glyphicon-arrow-down");
 
 			$("div.unix_time div.input").show();
 			$("div.unix_time div.output").hide();
@@ -307,8 +300,8 @@ $(function() {
 
 			$("input#human_format").attr("disabled", false);
 		} else {
-			$("div.unix_time").appendTo("div.content");
-			$("div.human_time").prependTo("div.content");
+			$("#swap .swap_horizontal .glyphicon").removeClass("glyphicon-arrow-right").addClass("glyphicon-arrow-left");
+			$("#swap .swap_vertical .glyphicon").removeClass("glyphicon-arrow-down").addClass("glyphicon-arrow-up");
 
 			$("div.unix_time div.input").hide();
 			$("div.unix_time div.output").show();
@@ -325,16 +318,89 @@ $(function() {
 
 	$("div.input:visible input").focus().select();
 
-	$("a#options").click(function() {
-		var time_box = $(this).parent().parent();
-		if($("div.dialog", time_box).is(":visible")) {
-			$("div.dialog", time_box).hide();
-			$(this).text("+");
-		} else {
-			$("div.dialog", time_box).show();
-			$(this).text("-");
-		}
-	});
+	var cached_lat_long = {},
+		cached_offsets = {},
+		getLatLong = function(city_name, callback, thisArg) {
+			if(!thisArg) { thisArg = this; }
 
-	$("div.options div.dialog").hide();
+			if(_.has(cached_lat_long, city_name)) {
+				callback.apply(thisArg, cached_lat_long[city_name]);
+			} else {
+				$.ajax({
+					url: "//maps.googleapis.com/maps/api/geocode/json",
+					data: {
+						address: city_name,
+						sensor: false
+					},
+					success: function(data) {
+						if(data.status === "OK") {
+							var results = data.results,
+								result = results[0];
+
+							cached_lat_long[city_name] = [false, result];
+						} else {
+							cached_lat_long[city_name] = [data];
+						}
+					},
+					error: function(err) {
+						cached_lat_long[city_name] = [err];
+					}
+				}).always(function() {
+					callback.apply(thisArg, cached_lat_long[city_name]);
+				});
+			}
+		},
+		getTZOffset = function(lat, lng, timestamp, callback, thisArg) {
+			var hash = [lat,lng,timestamp].join(",");
+
+			if(!thisArg) { thisArg = this; }
+
+			if(_.has(cached_offsets, hash)) {
+				callback.apply(thisArg, cached_offsets[hash]);
+			} else {
+				$.ajax({
+					url: "https://maps.googleapis.com/maps/api/timezone/json",
+					data: {
+						location: [lat, lng].join(","),
+						sensor: false,
+						timestamp: Math.round(timestamp),
+						key: "AIzaSyC7cNKMxQv5FetedXxXVyyEa7mkHrtot5w"
+					},
+					success: function(data) {
+						if(data.status === "OK") {
+							cached_offsets[hash] = [false, data];
+						} else {
+							cached_offsets[hash] = [data];
+						}
+					},
+					error: function(data) {
+						cached_offsets[hash] = [err];
+					}
+				}).always(function() {
+					callback.apply(thisArg, cached_offsets[hash]);
+				});
+			}
+		},
+		get_timezone = function(city_name, timestamp, callback) {
+			getLatLong(city_name, function(err, result) {
+				if(err) {
+					callback(err);
+				} else {
+					var lat = result.geometry.location.lat,
+						lng = result.geometry.location.lng;
+
+					if(!_.isNumber(timestamp)) {
+						timestamp = (new Date()).getTime()/1000;
+					}
+
+					getTZOffset(lat, lng, timestamp, function(err, data) {
+						if(err) {
+							callback(err);
+						} else {
+							callback(false, data);
+						}
+					});
+				}
+			});
+		};
 });
