@@ -174,9 +174,6 @@ input#human_time {
 	text-align: center;
 }
 
-div.location_select div {
-}
-
 input#time_location {
 	padding-top: 1px;
 	padding-bottom: 1px;
@@ -192,6 +189,7 @@ div.city span.radio_label {
 
 div.time_location_details {
 	color: #AAA;
+	text-transform: none;
 }
 
 input#human_format {
