@@ -71,8 +71,8 @@ a:hover {
 	color: #46A7C3;
 }
 
-::-webkit-input-placeholder  { color:#BBB; }
-input:-moz-placeholder { color:#BBB; }
+::-webkit-input-placeholder  { color: #DDD; }
+input:-moz-placeholder { color: #DDD; }
 
 div.explanation {
 	text-transform: uppercase;
@@ -83,11 +83,6 @@ div.explanation {
 }
 
 div.swap {
-	margin-top: 35px;
-	text-transform: uppercase;
-	margin-bottom: 35px;
-	position: relative;
-	top: -5px;
 	text-align: center;
 }
 div.swap a {
@@ -97,6 +92,10 @@ div.swap a {
 }
 div.swap a:hover {
 	color: #428bca;
+}
+div.swap .swap_horizontal {
+	position: relative;
+	top: 30px;
 }
 
 div.location_select {
@@ -148,17 +147,27 @@ a#options {
 	top: 5px;
 }
 
-div.dialog {
-	padding-top: 20px;
+div.options {
+	padding-top: 10px;
 	color: #888;
 	font-size: 0.9em;
 	text-transform: uppercase;
+	text-align: left;
+	padding-bottom: 5px;
 }
 
-div.dialog input {
+div.options input {
 	border: 1px solid #CCC;
 	color: #888;
 }
+
+div.options label {
+	font-weight: 300;
+	text-transform: uppercase;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 
 input#human_time {
 	width: 17em;
@@ -181,21 +190,8 @@ div.city span.radio_label {
 	margin-right: 15px;
 }
 
-div.dialog label {
-	font-weight: 300;
-	text-transform: uppercase;
-	margin-top: 0px;
-	margin-bottom: 0px;
-}
-
 div.time_location_details {
 	color: #AAA;
-}
-
-div.options {
-	text-align: left;
-	position: relative;
-	top: 10px;
 }
 
 input#human_format {

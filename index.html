@@ -20,12 +20,10 @@
 						<div class="output"></div>
 					</div>
 					<div class="options">
-						<div class="dialog">
-							<div class="format">
-								timestamp units:
-								<div><input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label></div>
-								<div><input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label></div>
-							</div>
+						<div class="format">
+							timestamp units:
+							<div><input type="radio" name="unix_format" value="seconds" id="seconds"/> <label for="seconds">seconds</label></div>
+							<div><input type="radio" name="unix_format" value="milliseconds" id="milliseconds"/> <label for="milliseconds">milliseconds</label></div>
 						</div>
 					</div>
 				</div>
@@ -34,7 +32,7 @@
 						<span class='swap_horizontal hidden-xs hidden-sm'>
 							<span class='glyphicon glyphicon-arrow-right'></span>
 						</span>
-						<span class='swap_vertical hidden-md hidden-lg'>
+						<span class='swap_vertical hidden-xs hidden-md hidden-lg'>
 							<span class='glyphicon glyphicon-arrow-down'></span>
 						</span>
 					</a>
@@ -48,21 +46,19 @@
 						<div class="output"></div>
 					</div>
 					<div class="options">
-						<div class="dialog">
-							<div class='col-sm-6 format_form'>
-								format <a target="momentjs_display_format" href="http://momentjs.com/docs/#/displaying/format/">(?)</a>: <div class="format"><input id="human_format" type="text" /></div>
-							</div>
-							<div class='col-sm-6 tz_form'>
-								time zone:
-								<div class="local"><input type="radio" name="time_zone" value="local" id="local"/> <label for="local">local</label></div>
-								<div class="utc"><input type="radio" name="time_zone" value="utc" id="utc"/> <label for="utc">UTC</label></div>
-								<div class="city">
-									<span class="radio_label">
-										<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">city</label>
-									</span>
-									<input id="time_location" type="text" placeholder="e.g. Pittsburgh, PA" autocomplete="off"/>
-									<div class="time_location_details"></div>
-								</div>
+						<div class='col-sm-6 format_form'>
+							format <a target="momentjs_display_format" href="http://momentjs.com/docs/#/displaying/format/">(?)</a>: <div class="format"><input id="human_format" type="text" /></div>
+						</div>
+						<div class='col-sm-6 tz_form'>
+							time zone:
+							<div class="local"><input type="radio" name="time_zone" value="local" id="local"/> <label for="local">local</label></div>
+							<div class="utc"><input type="radio" name="time_zone" value="utc" id="utc"/> <label for="utc">UTC</label></div>
+							<div class="city">
+								<span class="radio_label">
+									<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">city</label>
+								</span>
+								<input id="time_location" type="text" placeholder="e.g. Detroit, MI" autocomplete="off"/>
+								<div class="time_location_details"></div>
 							</div>
 						</div>
 					</div>
