@@ -190,6 +190,7 @@ div.city span.radio_label {
 div.time_location_details {
 	color: #AAA;
 	text-transform: none;
+	font-size: 0.9em;
 }
 
 input#human_format {
