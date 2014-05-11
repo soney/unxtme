@@ -30,6 +30,8 @@ $(function() {
 		});
 	};
 
+	var k1 = "AIzaSy", k3 = "et", k2 = "C7cNKMxQv5F", k5 = "Hrtot5w", k4 = "edXxXVyyEa7mk";
+
 	$.fn.addChangeListeners = function() {
 		return this.each(function() {
 			var $this = $(this);
@@ -131,11 +133,11 @@ $(function() {
 		var parsed_time = moment(options.human_time, options.human_format),
 			val = parsed_time.valueOf();
 		if(_.isNaN(val) || val < 0) {
-			parsed_time = moment(options.human_time); // remove formatting setting
-			val = parsed_time.valueOf();
-			if(_.isNaN(val) || val < 0) {
+			parsed_time = Date.parse(options.human_time); // remove formatting setting
+			if(_.isNull(parsed_time)) {
 				return undefined;
 			} else {
+				val = parsed_time.getTime();
 				return val;
 			}
 		} else {
@@ -296,6 +298,20 @@ $(function() {
 		update_converting();
 	});
 
+	$(".human_time .output").on("click", function() {
+		$("div.human_time div.input input")	.val($("div.human_time div.output").text())
+											.change();
+		options.converting_from = "human";
+		update_converting();
+	});
+
+	$(".unix_time .output").on("click", function() {
+		$("div.unix_time div.input input")	.val($("div.unix_time div.output").text())
+											.change();
+		options.converting_from = "unix";
+		update_converting();
+	});
+
 	var update_converting = function() {
 		if(options.converting_from === "unix") {
 			$("#swap .swap_horizontal .glyphicon").removeClass("glyphicon-arrow-left").addClass("glyphicon-arrow-right");
@@ -372,7 +388,7 @@ $(function() {
 						location: [lat, lng].join(","),
 						sensor: false,
 						timestamp: Math.round(timestamp),
-						key: "AIzaSyC7cNKMxQv5FetedXxXVyyEa7mkHrtot5w"
+						key: k1+k2+k3+k4+k5
 					},
 					success: function(data) {
 						if(data.status === "OK") {

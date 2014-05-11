@@ -91,13 +91,8 @@ div.swap {
 }
 div.swap a {
 	font-size: 3em;
-   -webkit-text-stroke: 2px #3697B3;
-	text-shadow:
-		-1px -1px 0 #3697B3,  
-		1px -1px 0 #3697B3,
-		-1px 1px 0 #3697B3,
-		1px 1px 0 #3697B3;
-   color: #EEE;
+	-webkit-text-stroke: 1px #DDD;
+	color: #EEE;
 }
 div.swap a:hover {
 	color: #3697B3;
@@ -156,10 +151,11 @@ div.dialog {
 	padding-top: 20px;
 	color: #888;
 	font-size: 0.9em;
+	text-transform: uppercase;
 }
 
 div.dialog input {
-	border: 1px solid #AAA;
+	border: 1px solid #CCC;
 	color: #888;
 }
 
@@ -174,9 +170,10 @@ div.location_select div {
 input#time_location {
 	padding-top: 1px;
 	padding-bottom: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 	margin: 0px;
 	position: relative;
-	top: -3px;
 }
 
 div.city span.radio_label {
@@ -185,6 +182,9 @@ div.city span.radio_label {
 
 div.dialog label {
 	font-weight: 300;
+	text-transform: uppercase;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 div.time_location_details {
@@ -200,10 +200,6 @@ div.options {
 input#human_format {
 	text-align: center;
 	width: 17em;
-}
-
-div.dialog hr {
-	border: 1px solid #E7E7E7;
 }
 
 div.box {
