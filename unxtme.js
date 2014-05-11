@@ -16,16 +16,9 @@ $(function() {
 		return this.each(function() {
 			var $this = $(this);
 			$this.on("focus", function() {
-				$this.one("mouseup.select", 
-						function() {
-							_.defer(function() {
-								$this.select();
-							})
-					});
-
-				_.delay(function() {
-					$this.off("mouseup.select");
-				}, 2000);
+				_.defer(function() {
+					$this.select();
+				})
 			});
 		});
 	};

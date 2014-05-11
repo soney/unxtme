@@ -45,7 +45,9 @@ input.error {
 input#unix_time, input#human_time {
 	text-align: center;
 	margin: auto;
-	border: 2px solid #3697B3;
+	border: 1px solid #999;
+	position: relative;
+	top: -2px;
 }
 
 div.output {
@@ -58,7 +60,6 @@ div.input input {
 
 a {
 	text-decoration: none;
-	color: #3697B3;
 	-webkit-transition: color 0.2s ease-in-out;
 	-moz-transition: color 0.2s ease-in-out;
 	-o-transition: color 0.2s ease-in-out;
@@ -95,7 +96,7 @@ div.swap a {
 	color: #EEE;
 }
 div.swap a:hover {
-	color: #3697B3;
+	color: #428bca;
 }
 
 div.location_select {
@@ -130,13 +131,13 @@ footer a {
 }
 
 footer a:hover {
-	color: #46A7C3;
+	color: #428bca;
 }
 
 footer div.sitename {
 	font-weight: bold;
 	font-size: 2em;
-	letter-spacing: -0.10em;
+	letter-spacing: -0.05em;
 	text-transform: uppercase;
 }
 
