@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta charset="utf-8" />
 		<title>UNXT.me</title>
 		
 		<meta name="description" content="Dead simple Unix timestamp conversion." />
 		<meta name="keywords" content="epoch,unix,converter,timestamp,date,time,online,free,easy" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<link rel="icon" type="image/png" href="favico.png" />
@@ -16,8 +17,8 @@
 				<div class="col-md-4 unix_time box">
 					<div class='head'>
 						<div class="explanation">unix&nbsp;time</div>
-						<div class="input"><input id="unix_time" type="text" autocomplete="off" /></div>
-						<div class="output"></div>
+						<div class="input"><input aria-label="Unix timestamp" id="unix_time" type="text" autocomplete="off" /></div>
+						<div class="output" role="button" tabindex="0" title="Click to edit this converted value"></div>
 					</div>
 					<div class="options">
 						<div class="format">
@@ -28,26 +29,20 @@
 					</div>
 				</div>
 				<div class="col-md-1 swap">
-					<a href="javascript:void(0)" id="swap">
-						<span class='swap_horizontal hidden-xs hidden-sm'>
-							<span class='glyphicon glyphicon-arrow-right'></span>
-						</span>
-						<span class='swap_vertical hidden-xs hidden-md hidden-lg'>
-							<span class='glyphicon glyphicon-arrow-down'></span>
-						</span>
-					</a>
+					<button type="button" id="swap" aria-label="Switch conversion direction">→</button>
 				</div>
 				<div class="col-md-7 human_time box">
 					<div class='head'>
 						<div class="explanation">human&nbsp;time</div>
 						<div class="input">
-							<input id="human_time" type="text" autocomplete="off" />
+							<input aria-label="Human date and time" aria-describedby="human_time_hint" id="human_time" type="text" autocomplete="off" />
+							<small id="human_time_hint">Try tomorrow at 3pm, next Friday, 2 hours ago, or September 6 at noon. Numeric dates use month/day/year unless your format specifies otherwise.</small>
 						</div>
-						<div class="output"></div>
+						<div class="output" role="button" tabindex="0" title="Click to edit this converted value"></div>
 					</div>
 					<div class="options">
 						<div class='col-sm-6 format_form'>
-							format <a target="momentjs_display_format" href="http://momentjs.com/docs/#/displaying/format/">(?)</a>: <div class="format"><input id="human_format" type="text" /></div>
+							format <a target="momentjs_display_format" href="https://momentjs.com/docs/#/displaying/format/">(?)</a>: <div class="format"><input aria-label="Date format" id="human_format" type="text" /></div>
 						</div>
 						<div class='col-sm-6 tz_form'>
 							time zone:
@@ -57,22 +52,24 @@
 								<span class="radio_label">
 									<input type="radio" name="time_zone" value="city" id="city"/> <label for="city">city</label>
 								</span>
-								<input id="time_location" type="text" placeholder="e.g. Detroit" autocomplete="off"/>
-								<div class="time_location_details"></div>
+								<input aria-label="Search city" aria-describedby="city_details" id="time_location" type="text" placeholder="e.g. Detroit" autocomplete="off"/>
+								<div id="city_details" class="time_location_details" role="status"></div>
+								<ul id="city_results" aria-label="Matching cities"></ul>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<p id="conversion_status" role="status"></p>
 			<footer>
 				<div class="sitename"><a href="http://unxt.me">unxt.me</a></div>
+				<div class="attribution">City search by <a href="https://open-meteo.com/">Open-Meteo</a> / <a href="https://www.geonames.org/">GeoNames</a></div>
 				<div class="copyright"><a href="http://from.so/">Stephen Oney</a></div>
 			</footer>
 		</div>
 	</body>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-	<script type="text/javascript" src="unxtme.js"></script>
+	<script src="vendor/moment.min.js"></script>
+	<script src="vendor/moment-timezone-with-data.min.js"></script>
+	<script src="vendor/chrono.min.js"></script>
+	<script src="unxtme.js"></script>
 </html>

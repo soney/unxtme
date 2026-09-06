@@ -1,0 +1,15 @@
+{
+  "name": "unxtme",
+  "private": true,
+  "scripts": {
+    "test": "TZ=America/Los_Angeles node --test tests/*.test.cjs",
+    "build:vendor": "node scripts/build-vendor.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "jsdom": "29.1.1"
+  },
+  "dependencies": {
+    "chrono-node": "2.10.1"
+  }
+}

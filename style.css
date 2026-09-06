@@ -208,3 +208,22 @@ div.head {
 	background-color: #F8F8F8;
 	border-bottom: 1px solid #DDD;
 }
+
+[hidden] { display: none !important; }
+input#unix_time, input#human_time, input#human_format { max-width: 100%; }
+div.output { overflow-wrap: anywhere; cursor: pointer; }
+#swap { border: 0; background: transparent; color: #777; font-size: 3em; margin-top: 25px; }
+#swap:hover { color: #428bca; }
+:focus-visible { outline: 2px solid #428bca; outline-offset: 3px; }
+#city_results { list-style: none; margin: 6px 0; padding: 0; text-transform: none; }
+#city_results button { width: 100%; text-align: left; padding: 7px; border: 1px solid #ddd; background: #fff; color: #333; }
+#city_results button:hover, #city_results button:focus { background: #eef6fc; }
+#conversion_status { color: #666; clear: both; }
+#conversion_status.error { color: #900; }
+.time_location_details { margin-top: 6px; }
+@media (max-width: 991px) {
+    #swap { margin-top: 0; transform: rotate(90deg); }
+    .options { overflow: auto; }
+}
+
+#human_time_hint { display: block; padding: 6px 12px; color: #666; }
