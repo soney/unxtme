@@ -8,16 +8,16 @@ City search uses the Open-Meteo geocoding API and requires an internet connectio
 The first result is selected automatically; choose another result to disambiguate
 cities with the same name. Search failures can be retried with Enter.
 
-Date input accepts the displayed Moment format, ISO 8601, and common dates such
+Date input accepts the displayed date, ISO 8601, and common dates such
 as `September 6, 2026 at 3:30 pm`, `6 Sep 2026 15:30`, and `9/6/2026`.
 Commas, ordinal suffixes, extra spaces, and AM/PM punctuation are accepted.
 Dates without a time use midnight. Numeric dates default to month/day/year;
-a configured day-first format takes priority. Invalid dates and trailing junk
+unambiguous day-first dates are also accepted. Invalid dates and trailing junk
 are rejected. City conversions use the date's time-zone rules, including
 seasonal offsets. As with Moment Timezone, nonexistent spring-forward times move
 forward by the DST gap, and repeated fall-back times use the earlier occurrence
-unless an explicit offset is supplied. Include `SSS` in the date format to retain
-milliseconds when converting back from a formatted date.
+unless an explicit offset is supplied. The human-time display uses a consistent
+readable format and includes milliseconds when millisecond units are selected.
 
 Natural-language input also accepts `now`, `tomorrow at 3pm`, `next Friday`,
 `2 hours ago`, `in 2 days`, `September 6 at noon`, and clock-only input like `8pm`.

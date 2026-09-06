@@ -4,7 +4,8 @@
     const $ = (selector) => document.querySelector(selector);
     const unixInput = $('#unix_time');
     const humanInput = $('#human_time');
-    const formatInput = $('#human_format');
+    const humanFormat = 'dddd, MMMM D YYYY h:mm:ss A';
+    const humanMillisecondFormat = 'dddd, MMMM D YYYY h:mm:ss.SSS A';
     const cityInput = $('#time_location');
     const details = $('.time_location_details');
     const results = $('#city_results');
@@ -38,9 +39,9 @@
 
     function parseHuman() {
         const value = humanInput.value.trim();
-        // Honor the configured format (including day-first dates) before defaults.
-        const configured = parseInZone(value, [formatInput.value, moment.ISO_8601]);
-        if (configured.isValid()) return configured;
+        // Accept our displayed dates as well as ISO input.
+        const displayed = parseInZone(value, [humanFormat, humanMillisecondFormat, moment.ISO_8601]);
+        if (displayed.isValid()) return displayed;
         const normalized = value
             .replace(/(\d)(st|nd|rd|th)\b/gi, '$1')
             .replace(/,/g, ' ')
@@ -117,7 +118,7 @@
             feedback.textContent = direction === 'unix' ? 'Enter a valid Unix timestamp.' : 'Try tomorrow at 3pm, next Friday, 2 hours ago, or September 6 at noon.';
             return;
         }
-        output.textContent = direction === 'unix' ? time.format(formatInput.value) : String(units() === 'seconds' ? Math.floor(time.valueOf() / 1000) : time.valueOf());
+        output.textContent = direction === 'unix' ? time.format(units() === 'milliseconds' ? humanMillisecondFormat : humanFormat) : String(units() === 'seconds' ? Math.floor(time.valueOf() / 1000) : time.valueOf());
         if (direction === 'human') {
             const interpreted = time.clone();
             if (zoneMode() === 'utc') interpreted.utc();
@@ -229,10 +230,9 @@
     }
 
     unixInput.value = Math.floor(Date.now() / 1000);
-    formatInput.value = 'dddd, MMMM D YYYY h:mm:ss A';
     $('#seconds').checked = true;
     $('#local').checked = true;
-    [unixInput, humanInput, formatInput].forEach((input) => input.addEventListener('input', () => {
+    [unixInput, humanInput].forEach((input) => input.addEventListener('input', () => {
         if (input === humanInput) referenceTime = Date.now();
         render();
     }));

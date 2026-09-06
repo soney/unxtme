@@ -21,10 +21,10 @@ function setup(t, fetch = async () => ({ ok: true, json: async () => ({ results:
 }
 test('UTC, negative timestamps, milliseconds and invalid input', t => {
     const { $, input, radio } = setup(t);
-    radio('#utc'); input('#human_format', 'YYYY-MM-DD HH:mm:ss.SSS');
-    input('#unix_time', '0'); assert.equal($('.human_time .output').textContent, '1970-01-01 00:00:00.000');
-    input('#unix_time', '-1'); assert.equal($('.human_time .output').textContent, '1969-12-31 23:59:59.000');
-    radio('#milliseconds'); input('#unix_time', '1234'); assert.equal($('.human_time .output').textContent, '1970-01-01 00:00:01.234');
+    radio('#utc');
+    input('#unix_time', '0'); assert.equal($('.human_time .output').textContent, 'Thursday, January 1 1970 12:00:00 AM');
+    input('#unix_time', '-1'); assert.equal($('.human_time .output').textContent, 'Wednesday, December 31 1969 11:59:59 PM');
+    radio('#milliseconds'); input('#unix_time', '1234'); assert.equal($('.human_time .output').textContent, 'Thursday, January 1 1970 12:00:01.234 AM');
     $('#swap').click(); assert.equal($('.unix_time .output').textContent, '1234');
     input('#human_time', '2024-02-30'); assert.equal($('#human_time').getAttribute('aria-invalid'), 'true');
     $('#swap').click();
@@ -34,22 +34,21 @@ test('UTC, negative timestamps, milliseconds and invalid input', t => {
 });
 test('city DST offsets and reverse conversion are independent of host zone', async t => {
     const { $, input, search } = setup(t);
-    input('#human_format', 'YYYY-MM-DD HH:mm:ss');
     await search('Detroit');
     input('#unix_time', String(Date.UTC(2024, 0, 15, 12) / 1000));
-    assert.equal($('.human_time .output').textContent, '2024-01-15 07:00:00');
+    assert.equal($('.human_time .output').textContent, 'Monday, January 15 2024 7:00:00 AM');
     assert.match($('.time_location_details').textContent, /UTC-05:00/);
     input('#unix_time', String(Date.UTC(2024, 6, 15, 12) / 1000));
-    assert.equal($('.human_time .output').textContent, '2024-07-15 08:00:00');
+    assert.equal($('.human_time .output').textContent, 'Monday, July 15 2024 8:00:00 AM');
     $('#swap').click(); assert.equal($('.unix_time .output').textContent, String(Date.UTC(2024, 6, 15, 12) / 1000));
-    input('#human_time', '2024-01-15 07:00:00'); assert.equal($('.unix_time .output').textContent, String(Date.UTC(2024, 0, 15, 12) / 1000));
+    input('#human_time', 'Monday, January 15 2024 7:00:00 AM'); assert.equal($('.unix_time .output').textContent, String(Date.UTC(2024, 0, 15, 12) / 1000));
 });
 test('select alternate city and preserve quarter-hour offset', async t => {
     const { $, input, search } = setup(t, async () => ({ ok: true, json: async () => ({ results: [detroit, kathmandu] }) }));
-    input('#human_format', 'YYYY-MM-DD HH:mm:ss'); input('#unix_time', '1705320000');
+    input('#unix_time', '1705320000');
     await search('city'); $('#city_results li:nth-child(2) button').click();
     assert.match($('.time_location_details').textContent, /UTC\+05:45/);
-    assert.equal($('.human_time .output').textContent, '2024-01-15 17:45:00');
+    assert.equal($('.human_time .output').textContent, 'Monday, January 15 2024 5:45:00 PM');
 });
 test('empty results and failed requests stop pending state, Enter retries', async t => {
     let mode = 'empty';
@@ -93,8 +92,8 @@ test('common human dates accept punctuation, padding and 12/24-hour times', t =>
     assert.equal($('.unix_time .output').textContent, String(Date.UTC(2026, 8, 6) / 1000));
     input('#human_time', 'September 6, 2026 at 3pm');
     assert.equal($('.unix_time .output').textContent, String(Date.UTC(2026, 8, 6, 15) / 1000));
-    input('#human_format', 'DD/MM/YYYY'); input('#human_time', '06/09/2026');
-    assert.equal($('.unix_time .output').textContent, String(Date.UTC(2026, 8, 6) / 1000));
+    input('#human_time', '06/09/2026');
+    assert.equal($('.unix_time .output').textContent, String(Date.UTC(2026, 5, 9) / 1000));
 });
 test('forgiving parsing retains local/city zones and explicit ISO offsets', async t => {
     const { $, input, radio, search } = setup(t);
