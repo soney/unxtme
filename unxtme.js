@@ -91,6 +91,7 @@
         const output = $(direction === 'unix' ? '.human_time .output' : '.unix_time .output');
         output.textContent = '';
         status.textContent = '';
+        $('#unix_status').textContent = '';
         status.classList.remove('error');
         [unixInput, humanInput].forEach((input) => {
             input.classList.remove('error');
@@ -112,7 +113,8 @@
             input.classList.add('error');
             status.classList.add('error');
             input.setAttribute('aria-invalid', 'true');
-            status.textContent = direction === 'unix' ? 'Enter a valid Unix timestamp.' : 'Enter a valid date, e.g. September 6, 2026 at 3:30 pm or 9/6/2026 15:30.';
+            const feedback = direction === 'unix' ? $('#unix_status') : status;
+            feedback.textContent = direction === 'unix' ? 'Enter a valid Unix timestamp.' : 'Try tomorrow at 3pm, next Friday, 2 hours ago, or September 6 at noon.';
             return;
         }
         output.textContent = direction === 'unix' ? time.format(formatInput.value) : String(units() === 'seconds' ? Math.floor(time.valueOf() / 1000) : time.valueOf());

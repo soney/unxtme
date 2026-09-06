@@ -17,7 +17,7 @@
 				<div class="col-md-4 unix_time box">
 					<div class='head'>
 						<div class="explanation">unix&nbsp;time</div>
-						<div class="input"><input aria-label="Unix timestamp" id="unix_time" type="text" autocomplete="off" /></div>
+						<div class="input"><input aria-label="Unix timestamp" aria-describedby="unix_status" id="unix_time" type="text" autocomplete="off" /><p id="unix_status" role="status"></p></div>
 						<div class="output" role="button" tabindex="0" title="Click to edit this converted value"></div>
 					</div>
 					<div class="options">
@@ -35,8 +35,8 @@
 					<div class='head'>
 						<div class="explanation">human&nbsp;time</div>
 						<div class="input">
-							<input aria-label="Human date and time" aria-describedby="human_time_hint" id="human_time" type="text" autocomplete="off" />
-							<small id="human_time_hint">Try tomorrow at 3pm, next Friday, 2 hours ago, or September 6 at noon. Numeric dates use month/day/year unless your format specifies otherwise.</small>
+							<input aria-label="Human date and time" aria-describedby="conversion_status" id="human_time" type="text" autocomplete="off" />
+							<p id="conversion_status" role="status"></p>
 						</div>
 						<div class="output" role="button" tabindex="0" title="Click to edit this converted value"></div>
 					</div>
@@ -60,7 +60,6 @@
 					</div>
 				</div>
 			</div>
-			<p id="conversion_status" role="status"></p>
 			<footer>
 				<div class="sitename"><a href="http://unxt.me">unxt.me</a></div>
 				<div class="attribution">City search by <a href="https://open-meteo.com/">Open-Meteo</a> / <a href="https://www.geonames.org/">GeoNames</a></div>
