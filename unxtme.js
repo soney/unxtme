@@ -16,9 +16,13 @@
     let controller;
     let requestId = 0;
     let referenceTime = Date.now();
+    let detectedUnits = 'seconds';
     const cache = new Map();
     const zoneMode = () => $('input[name=time_zone]:checked').value;
-    const units = () => $('input[name=unix_format]:checked').value;
+    const units = () => {
+        const selected = $('input[name=unix_format]:checked').value;
+        return selected === 'auto' ? detectedUnits : selected;
+    };
     const cityLabel = (city) => [...new Set([city.name, city.admin1, city.country].filter(Boolean))].join(', ');
 
     const dateFormats = [
@@ -83,6 +87,7 @@
     }
 
     function render() {
+        $('label[for=auto_units]').textContent = 'auto (' + detectedUnits + ')';
         $('.unix_time .input').hidden = direction !== 'unix';
         $('.unix_time .output').hidden = direction === 'unix';
         $('.human_time .input').hidden = direction !== 'human';
@@ -230,10 +235,15 @@
     }
 
     unixInput.value = Math.floor(Date.now() / 1000);
-    $('#seconds').checked = true;
+    $('#auto_units').checked = true;
     $('#local').checked = true;
     [unixInput, humanInput].forEach((input) => input.addEventListener('input', () => {
         if (input === humanInput) referenceTime = Date.now();
+        if (input === unixInput) {
+            // Magnitude is a heuristic; manual units handle dates near the epoch or far in the future.
+            const value = Number(unixInput.value.trim());
+            if (Number.isFinite(value)) detectedUnits = Math.abs(value) >= 1e11 ? 'milliseconds' : 'seconds';
+        }
         render();
     }));
     document.querySelectorAll('input[name=unix_format]').forEach((input) => input.addEventListener('change', render));

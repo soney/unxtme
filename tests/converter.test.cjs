@@ -159,3 +159,25 @@ test('natural language rejects ranges, multiple dates and unrelated prose', t =>
         assert.equal($('#human_time').getAttribute('aria-invalid'), 'true');
     }
 });
+test('automatic units detect seconds and milliseconds while manual choices override them', t => {
+    const { $, input, radio } = setup(t);
+    assert.equal($('#auto_units').checked, true);
+    radio('#utc');
+    input('#unix_time', '1705320000');
+    assert.equal($('.human_time .output').textContent, 'Monday, January 15 2024 12:00:00 PM');
+    assert.equal($('label[for=auto_units]').textContent, 'auto (seconds)');
+    input('#unix_time', '1705320000123');
+    assert.equal($('.human_time .output').textContent, 'Monday, January 15 2024 12:00:00.123 PM');
+    assert.equal($('label[for=auto_units]').textContent, 'auto (milliseconds)');
+    $('#swap').click(); assert.equal($('.unix_time .output').textContent, '1705320000123');
+    $('#swap').click(); input('#unix_time', '-1705320000123');
+    assert.equal($('label[for=auto_units]').textContent, 'auto (milliseconds)');
+    input('#unix_time', '1.5');
+    assert.equal($('label[for=auto_units]').textContent, 'auto (seconds)');
+    radio('#milliseconds'); input('#unix_time', '1234');
+    assert.equal($('.human_time .output').textContent, 'Thursday, January 1 1970 12:00:01.234 AM');
+    radio('#auto_units');
+    assert.equal($('.human_time .output').textContent, 'Thursday, January 1 1970 12:20:34 AM');
+    radio('#seconds'); input('#unix_time', '100000000000');
+    assert.match($('.human_time .output').textContent, /5138/);
+});

@@ -4,6 +4,12 @@ A static Unix timestamp converter. Serve this directory with any static web serv
 (for example, `python3 -m http.server 8000`) and open `http://localhost:8000`.
 No build step or API key is required.
 
+Timestamp units default to automatic detection: absolute values of at least
+100 billion are interpreted as milliseconds; smaller values as seconds. The auto
+label shows the detected unit. Manual seconds/milliseconds choices override this
+heuristic for ambiguous timestamps (such as milliseconds near January 1970).
+Reverse conversion retains the detected unit until another timestamp is entered.
+
 City search uses the Open-Meteo geocoding API and requires an internet connection.
 The first result is selected automatically; choose another result to disambiguate
 cities with the same name. Search failures can be retried with Enter.
